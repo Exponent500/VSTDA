@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="VerySimpleToDoApp" lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Very Simple To Do App</title>
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+        <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
+        <!-- endbower -->
+
+        <!-- inject:css -->
+        <link rel="stylesheet" href="/app/styles/main.css">
+        <!-- endinject -->  
+    </head>
+
+    <body ng-controller="MainController"> 
+        <div class="container">
+            <h1>Very Simple Todo App</h1>
+
+            <div class="col-xs-6">
+                <!-- Panel to add a todo list item -->
+                <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h5>Add Todo Item</h5>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <!-- Task Description Input -->
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input class="form-control" type="text" ng-model="description" name="description" placeholder="Enter a Description">
+                            </div>
+                            <!-- Priority selection menu -->
+                            <div class="form-group">
+                                <label for="priority">Priority</label>
+                                <select class="form-control" ng-model="priority" name="priority">
+                                    <option value="1">High</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Low</option>
+                                </select>
+                            </div>
+                        </div> 
+
+                        <!-- Button to add a todoitem to the list -->
+                        <div class="panel-footer"> 
+                             <button type="button" class="btn btn-primary" ng-click="addTodo()">Add Todo</button>
+                        </div>
+                </div>
+
+            </div>
+
+            <!-- list of todo list items along with buttons to sort the list -->
+            <div class="col-xs-6">
+                <!-- buttons for ordering the to do list -->
+                <div>
+                    
+                    <button type="button" class="btn btn-danger" ng-class= "sortByHighestPriorityNotSelected ? 'btn-danger' : 'btn-warning'" ng-click="orderByHighestPriority()">Order by highest priority</button>
+                    <button type="button" class="btn btn-info" ng-class= "sortByLowestPriorityNotSelected ? 'btn-info' : 'btn-warning'" ng-click="orderByLowestPriority()">Order by lowest priority</button>
+                    <button type="button" class="btn btn-primary" ng-class= "sortAlphabeticallyNotSelected ? 'btn-primary' : 'btn-warning'" ng-click="orderAlphabetically()">Order alphabetically</button>
+                </div>
+
+                <!-- Table that will list todo list items -->
+                <table class="table table-border">
+                    <!-- Background color of each item is changed dynamically, based on priority -->
+                    <!-- List is filtered by current state of sortType and sortSubType. It is first filtered by sortType and then by sortSubType -->
+                    <tr class="animated slideInRight" ng-repeat="todoListItem in todoList | orderBy:[sortType, sortSubType]" ng-class="{'bg-danger': todoListItem.priority === '1', 'bg-warning': todoListItem.priority === '2', 'bg-info': todoListItem.priority === '3'}">
+                        <td class="ng-cloak"> <!-- prevent {{todoListItem.description}} from being displayed upon initial page load-->
+                            {{todoListItem.description}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        </div>
+        <!-- bower:js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/toastr/toastr.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <!-- endbower -->
+
+        <!-- inject:js -->
+        <script src="/app/app.js"></script>
+        <!-- endinject -->
+    </body>
+</html>
